@@ -1,7 +1,7 @@
 import boto3
-
+import json 
 # Get the service resource.
-dynamodb = boto3.resource('dynamodb')
+dynamodb = boto3.resource('dynamodb', "eu-north-1")
 
 mnist_data_table = dynamodb.Table('mnist-data')
 
@@ -23,10 +23,9 @@ def get_item(data_type, id):
         if not item:
             print(404, f"Item with data_type {data_type} and ID {id} not found")
         else:
-            return (item)
+            return json.dumps(item)
 
     except Exception as e:
         print(500, f"Failed to fetch item: {str(e)}")
 
-print(get_item("train", 0))
 

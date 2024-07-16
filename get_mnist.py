@@ -3,12 +3,12 @@ import gzip
 import os
 import hashlib
 import numpy as np
-
+from tqdm import tqdm
 from putdata_into_db import add_data
 
 def fetch(url):
 
-  fp = os.path.join("/Users/vrindavan/Datasets/mnist", hashlib.md5(url.encode('utf-8')).hexdigest())
+  fp = os.path.join("/tmp", hashlib.md5(url.encode('utf-8')).hexdigest())
   if os.path.isfile(fp):
     with open(fp, "rb") as f:
       dat = f.read()
@@ -28,6 +28,10 @@ X_test = fetch(
 Y_test = fetch(
     "https://ossci-datasets.s3.amazonaws.com/mnist/t10k-labels-idx1-ubyte.gz")[8:]
 
-for i in range(100):
-    index = i  
-    add_data("y_train", index,X_train[index].tolist())
+def add_data_( ):
+    for index in tqdm(range(X_train.shape[0])):
+        add_data("train", index, X_train[index].tolist(), Y_train[index].tolist())
+
+
+
+add_data_()
